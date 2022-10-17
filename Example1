@@ -1,0 +1,79 @@
+-- {}{}{}{}{}{}{}{}     SET SIGNAL       {}{}{}{}{}{}{}{}  --
+
+
+
+local SignalText = script.Parent.Signal.Value
+
+
+
+-- {}{}{}{}{}{}{}{}      SCRIPT BODY BELOW      {}{}{}{}{}{}{}{}  --
+
+
+script.Parent.Text.SurfaceGui.TextLabel.Text = SignalText
+script.Parent.Name = SignalText
+
+local FoundBlock = string.match(SignalText, "%d%d")
+print(FoundBlock)
+local ActSignal
+
+if game.Workspace:FindFirstChild("Sector "..FoundBlock.."000") ~= nil and game.Workspace:FindFirstChild("Sector "..FoundBlock.."000").Signals:FindFirstChild(SignalText) ~= nil then
+	ActSignal = game.Workspace:FindFirstChild("Sector "..FoundBlock.."000").Signals:FindFirstChild(SignalText)
+	script.Parent.ActSignal.Value = ActSignal
+else
+	local clone = game.Workspace.Errors.TEMPLATE:Clone()
+	clone.Name = "InternalError"
+	clone.SignalBlock.Value = script.Parent.Signal.Value
+	clone.Location.Value = script.Parent.Parent.Parent.Parent.Parent.Parent.Name
+	clone.FiledBy.Value = "Automatically Filed"
+	clone.Description.Value = "Signal ID: " .. script.Parent.Signal.Value .. ", failed to get collected by "..script.Parent.Parent.Parent.Parent.Parent.Parent.Name.."."
+	clone.Parent = game.Workspace.Errors.SignalErrors
+	warn("[ERROR STRIP CREATED] Signal ID: " .. script.Parent.Signal.Value .. ", failed to get collected by "..script.Parent.Parent.Parent.Parent.Parent.Parent.Name..".")
+	while game.Workspace:FindFirstChild("Sector "..FoundBlock.."000") == nil or game.Workspace:FindFirstChild("Sector "..FoundBlock.."000").Signals:FindFirstChild(SignalText) == nil do
+		wait(0.1)
+		script.Parent.LED11.BrickColor = BrickColor.new("Really red")
+		script.Parent.LED12.BrickColor = BrickColor.new("Really red")
+		script.Parent.LED21.BrickColor = BrickColor.new("Really red")
+		script.Parent.LED22.BrickColor = BrickColor.new("Really red")
+		wait(0.1)
+		script.Parent.LED11.BrickColor = BrickColor.new("Black")
+		script.Parent.LED12.BrickColor = BrickColor.new("Black")
+		script.Parent.LED21.BrickColor = BrickColor.new("Black")
+		script.Parent.LED22.BrickColor = BrickColor.new("Black")
+	end
+end
+
+
+
+while wait() do
+	if ActSignal.Signal.LightGreen1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED11.BrickColor = BrickColor.new("Lime green")
+	elseif ActSignal.Signal.LightYellow1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED11.BrickColor = BrickColor.new("Deep orange")
+	elseif ActSignal.Signal.LightRed1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED11.BrickColor = BrickColor.new("Really red")
+	end
+	
+	if ActSignal.BottomSignal.LightGreen1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED12.BrickColor = BrickColor.new("Lime green")
+	elseif ActSignal.BottomSignal.LightYellow1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED12.BrickColor = BrickColor.new("Deep orange")
+	elseif ActSignal.BottomSignal.LightRed1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED12.BrickColor = BrickColor.new("Really red")
+	end
+	
+	if ActSignal.BackSignal1.LightGreen1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED21.BrickColor = BrickColor.new("Lime green")
+	elseif ActSignal.BackSignal1.LightYellow1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED21.BrickColor = BrickColor.new("Deep orange")
+	elseif ActSignal.BackSignal1.LightRed1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED21.BrickColor = BrickColor.new("Really red")
+	end
+	
+	if ActSignal.BackSignal2.LightGreen1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED22.BrickColor = BrickColor.new("Lime green")
+	elseif ActSignal.BackSignal2.LightYellow1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED22.BrickColor = BrickColor.new("Deep orange")
+	elseif ActSignal.BackSignal2.LightRed1.BrickColor ~= BrickColor.Black() then
+		script.Parent.LED22.BrickColor = BrickColor.new("Really red")
+	end
+end
