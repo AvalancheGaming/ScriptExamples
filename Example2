@@ -1,0 +1,1219 @@
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+
+local event = ReplicatedStorage:WaitForChild("CheckAsset")
+
+
+script.Parent.EC.MouseButton1Click:Connect(function()
+	local flight = game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text)
+	print(flight.Name)
+	local Sections = ""
+	local selectedrow = 0
+	local selectedrowstring = ""
+	
+	local letters = ""
+	
+	local selectedletter = ""
+	
+	local dividedrows = ""
+	local foundsection = ""
+	
+	script.Parent.EC.Visible = false
+	script.Parent.BC.Visible = false
+	script.Parent.FC.Visible = false
+	script.Parent.FindingSeat.Visible = true
+	
+	
+	local function getECrow()
+		for count = 1, tonumber(flight.SEATING.BOARDINGSECTIONS.Value) do
+			Sections = Sections.. "MAIN ".. count .. ","
+		end
+		print(Sections)
+	
+		local rows = flight.SEATING.EC.ROWS.Value
+	
+		local rowhighlow = string.split(rows, "-")
+		print(rowhighlow)
+	
+		selectedrow = math.random(tonumber(rowhighlow[1]), tonumber(rowhighlow[2]))
+		
+		selectedrowstring = tostring(selectedrow)
+		print(selectedrowstring)
+		
+		local sectionedrows = tonumber(rowhighlow[2]) / tonumber(flight.SEATING.BOARDINGSECTIONS.Value)
+		print(sectionedrows)
+		
+		local splitsections = string.split(Sections, ",")
+		
+		
+		local counted = -1
+		
+		
+		for sectioned = tonumber(rowhighlow[1]), tonumber(rowhighlow[2]) + sectionedrows, sectionedrows do
+			counted = counted + 1
+			print(counted)
+			print("Sectioned: " .. sectioned)
+			print("Lowest: " .. rowhighlow[1])
+			if selectedrow == tonumber(rowhighlow[1]) then
+				if foundsection == "" then
+					foundsection = splitsections[1]
+					print(foundsection)
+				end
+			end
+			if selectedrow >= tonumber(rowhighlow[1]) and selectedrow < sectioned then
+				if foundsection == "" then
+					foundsection = splitsections[counted]
+					print(foundsection)
+				end
+			end
+		end
+		
+		if selectedrow == tonumber(rowhighlow[2]) then
+			foundsection = splitsections[counted]
+		end
+		
+	end
+	
+	local function getletterinrow()
+		for count = 1, tonumber(flight.SEATING.EC.PERROW.Value) do
+			if count == 1 then
+				letters = letters .. "A,"
+			end
+			if count == 2 then
+				letters = letters .. "B,"
+			end
+			if count == 3 then
+				letters = letters .. "C,"
+			end
+			if count == 4 then
+				letters = letters .. "D,"
+			end
+			if count == 5 then
+				letters = letters .. "E,"
+			end
+			if count == 6 then
+				letters = letters .. "F,"
+			end
+			if count == 7 then
+				letters = letters .. "G,"
+			end
+			if count == 8 then
+				letters = letters .. "E,"
+			end
+		end
+		print(letters)
+		
+		local list = string.split(letters, ",")
+		local getrandom = math.random(1, tonumber(flight.SEATING.EC.PERROW.Value))
+		
+		selectedletter = list[getrandom]
+	end
+	
+	
+	
+	getECrow()
+	
+	getletterinrow()
+	
+	
+	local exactseat = selectedrowstring .. selectedletter
+	
+	
+	
+	for _,v in pairs(flight.CHECKEDINUSERS:GetChildren()) do
+		while v.SEAT.Value == exactseat do
+			getECrow()
+			getletterinrow()
+			exactseat = selectedrowstring .. selectedletter
+		end
+	end
+	
+	
+	print(exactseat)
+	
+	
+	
+	script.Parent.Visible = false
+	script.Parent.EC.Visible = true
+	script.Parent.BC.Visible = true
+	script.Parent.FC.Visible = true
+	script.Parent.FindingSeat.Visible = false
+	script.Parent.Parent.FinalPage.Visible = true
+	
+	script.Parent.Parent.FinalPage.Seat.Text = exactseat
+	script.Parent.Parent.FinalPage.SeatingSection.Text = foundsection
+	
+	
+	
+	
+	
+end)
+
+
+local MarketplaceService = game:GetService("MarketplaceService")
+local PlayerOwnsAsset = MarketplaceService.PlayerOwnsAsset
+local promptevent = ReplicatedStorage:WaitForChild("PromptPurchase")
+
+
+script.Parent.BC.MouseButton1Click:Connect(function()
+	
+	
+	
+	local Players = game:GetService("Players")
+	local target = Players:FindFirstChild(script.Parent.Parent.Username.Text)
+	local success, doesplayerownasset = pcall(PlayerOwnsAsset, MarketplaceService, target, game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text).SEATING.BC.SHIRTID.Value)
+	if doesplayerownasset then
+		local flight = game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text)
+		print(flight.Name)
+		if flight.SEATING.BC.ROWS.Value ~= "0" then
+		local Sections = ""
+		local selectedrow = 0
+		local selectedrowstring = ""
+
+		local letters = ""
+
+		local selectedletter = ""
+
+		local dividedrows = ""
+		local foundsection = ""
+
+		
+
+
+		local function getECrow()
+			for count = 1, 1 do
+				Sections = Sections.. "BUSINESS ".. count .. ","
+			end
+			print(Sections)
+
+			local rows = flight.SEATING.BC.ROWS.Value
+			
+			local rowhighlow = string.split(rows, "-")
+			print(rowhighlow)
+
+			selectedrow = math.random(tonumber(rowhighlow[1]), tonumber(rowhighlow[2]))
+
+			selectedrowstring = tostring(selectedrow)
+			print(selectedrowstring)
+
+			local sectionedrows = tonumber(rowhighlow[2]) / 1
+			print(sectionedrows)
+
+			local splitsections = string.split(Sections, ",")
+
+
+			foundsection = Sections
+			end
+
+
+
+		
+
+		local function getletterinrow()
+			for count = 1, tonumber(flight.SEATING.BC.PERROW.Value) do
+				if count == 1 then
+					letters = letters .. "A,"
+				end
+				if count == 2 then
+					letters = letters .. "B,"
+				end
+				if count == 3 then
+					letters = letters .. "C,"
+				end
+				if count == 4 then
+					letters = letters .. "D,"
+				end
+				if count == 5 then
+					letters = letters .. "E,"
+				end
+				if count == 6 then
+					letters = letters .. "F,"
+				end
+				if count == 7 then
+					letters = letters .. "G,"
+				end
+				if count == 8 then
+					letters = letters .. "E,"
+				end
+			end
+			print(letters)
+
+			local list = string.split(letters, ",")
+			local getrandom = math.random(1, tonumber(flight.SEATING.BC.PERROW.Value))
+
+			selectedletter = list[getrandom]
+		end
+
+
+
+		getECrow()
+
+		getletterinrow()
+
+
+		local exactseat = selectedrowstring .. selectedletter
+
+
+
+		for _,v in pairs(flight.CHECKEDINUSERS:GetChildren()) do
+			while v.SEAT.Value == exactseat do
+				getECrow()
+				getletterinrow()
+				exactseat = selectedrowstring .. selectedletter
+			end
+		end
+
+
+		print(exactseat)
+
+		
+
+			script.Parent.Visible = false
+			script.Parent.EC.Visible = true
+			script.Parent.BC.Visible = true
+			script.Parent.FC.Visible = true
+			script.Parent.FindingSeat.Visible = false
+			script.Parent.Parent.FinalPage.Visible = true
+
+			script.Parent.Parent.FinalPage.Seat.Text = exactseat
+			script.Parent.Parent.FinalPage.SeatingSection.Text = foundsection
+			
+			
+			
+			
+		else
+
+			script.Parent.BC.Text = "This aircraft has no BC seating."
+			wait(2)
+			script.Parent.BC.Text = "BC"
+		end
+		
+		
+		
+	else
+		if target:GetRankInGroup(game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text).SEATING.GROUPID.Value) >= game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text).SEATING.BC.GROUPRANK.Value then
+			
+			local flight = game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text)
+			print(flight.Name)
+			if flight.SEATING.BC.ROWS.Value ~= "0" then
+				local Sections = ""
+				local selectedrow = 0
+				local selectedrowstring = ""
+
+				local letters = ""
+
+				local selectedletter = ""
+
+				local dividedrows = ""
+				local foundsection = ""
+
+
+
+
+				local function getECrow()
+					for count = 1, 1 do
+						Sections = Sections.. "BUSINESS ".. count .. ","
+					end
+					print(Sections)
+
+					local rows = flight.SEATING.BC.ROWS.Value
+
+					local rowhighlow = string.split(rows, "-")
+					print(rowhighlow)
+
+					selectedrow = math.random(tonumber(rowhighlow[1]), tonumber(rowhighlow[2]))
+
+					selectedrowstring = tostring(selectedrow)
+					print(selectedrowstring)
+
+					local sectionedrows = tonumber(rowhighlow[2]) / 1
+					print(sectionedrows)
+
+					local splitsections = string.split(Sections, ",")
+
+
+					foundsection = Sections
+				end
+
+
+
+
+
+				local function getletterinrow()
+					for count = 1, tonumber(flight.SEATING.BC.PERROW.Value) do
+						if count == 1 then
+							letters = letters .. "A,"
+						end
+						if count == 2 then
+							letters = letters .. "B,"
+						end
+						if count == 3 then
+							letters = letters .. "C,"
+						end
+						if count == 4 then
+							letters = letters .. "D,"
+						end
+						if count == 5 then
+							letters = letters .. "E,"
+						end
+						if count == 6 then
+							letters = letters .. "F,"
+						end
+						if count == 7 then
+							letters = letters .. "G,"
+						end
+						if count == 8 then
+							letters = letters .. "E,"
+						end
+					end
+					print(letters)
+
+					local list = string.split(letters, ",")
+					local getrandom = math.random(1, tonumber(flight.SEATING.BC.PERROW.Value))
+
+					selectedletter = list[getrandom]
+				end
+
+
+
+				getECrow()
+
+				getletterinrow()
+
+
+				local exactseat = selectedrowstring .. selectedletter
+
+
+
+				for _,v in pairs(flight.CHECKEDINUSERS:GetChildren()) do
+					while v.SEAT.Value == exactseat do
+						getECrow()
+						getletterinrow()
+						exactseat = selectedrowstring .. selectedletter
+					end
+				end
+
+
+				print(exactseat)
+
+
+
+				script.Parent.Visible = false
+				script.Parent.EC.Visible = true
+				script.Parent.BC.Visible = true
+				script.Parent.FC.Visible = true
+				script.Parent.FindingSeat.Visible = false
+				script.Parent.Parent.FinalPage.Visible = true
+
+				script.Parent.Parent.FinalPage.Seat.Text = exactseat
+				script.Parent.Parent.FinalPage.SeatingSection.Text = foundsection
+
+
+
+
+			else
+
+				script.Parent.BC.Text = "This aircraft has no BC seating."
+				wait(2)
+				script.Parent.BC.Text = "BC"
+			end
+			
+			
+			
+			
+			
+		else
+			
+			promptevent:FireServer(target, game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text).SEATING.BC.SHIRTID.Value)   --BC SHIRT ID
+
+
+			script.Parent.Parent.StatusBar.Text = "Prompting purchase..."
+
+			local productFunctions = {}
+
+			productFunctions[game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text).SEATING.BC.SHIRTID.Value] = function(receipt, player)
+
+				if player == target then
+
+					script.Parent.Parent.StatusBar.Text = "Player purchased, run system again."
+					wait(2)
+					script.Parent.Parent.StatusBar.Text = "Complete prompts..."
+
+					return true
+				end
+			end
+
+			local function processReceipt(receiptInfo)
+				local player = game.Players:GetPlayerByUserId(receiptInfo.PlayerId)
+				if player == target then
+					local handler = productFunctions[receiptInfo.ProductId]
+
+					-- Call the handler function and catch any errors
+					local success, result = pcall(handler, receiptInfo, player)
+				end
+			end
+
+			wait(10)
+
+			script.Parent.Parent.StatusBar.Text = "Complete prompts..."
+		end
+			
+		end
+		
+		
+		
+		
+		
+		
+
+
+end)
+
+
+
+
+script.Parent.FC.MouseButton1Click:Connect(function()
+	local Players = game:GetService("Players")
+	local target = Players:FindFirstChild(script.Parent.Parent.Username.Text)
+	local success, doesplayerownasset = pcall(PlayerOwnsAsset, MarketplaceService, target, game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text).SEATING.FC.SHIRTID.Value)
+	if doesplayerownasset then
+		local flight = game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text)
+		print(flight.Name)
+		if flight.SEATING.FC.ROWS.Value ~= "0" then
+			local Sections = ""
+			local selectedrow = 0
+			local selectedrowstring = ""
+
+			local letters = ""
+
+			local selectedletter = ""
+
+			local dividedrows = ""
+			local foundsection = ""
+
+			
+
+
+			local function getECrow()
+				for count = 1, 1 do
+					Sections = Sections.. "FIRST ".. count .. ","
+				end
+				print(Sections)
+
+				local rows = flight.SEATING.FC.ROWS.Value
+
+				local rowhighlow = string.split(rows, "-")
+				print(rowhighlow)
+
+				selectedrow = math.random(tonumber(rowhighlow[1]), tonumber(rowhighlow[2]))
+
+				selectedrowstring = tostring(selectedrow)
+				print(selectedrowstring)
+
+				local sectionedrows = tonumber(rowhighlow[2]) / 1
+				print(sectionedrows)
+
+				local splitsections = string.split(Sections, ",")
+
+
+				foundsection = Sections
+			end
+
+
+
+
+
+			local function getletterinrow()
+				for count = 1, tonumber(flight.SEATING.FC.PERROW.Value) do
+					if count == 1 then
+						letters = letters .. "A,"
+					end
+					if count == 2 then
+						letters = letters .. "B,"
+					end
+					if count == 3 then
+						letters = letters .. "C,"
+					end
+					if count == 4 then
+						letters = letters .. "D,"
+					end
+					if count == 5 then
+						letters = letters .. "E,"
+					end
+					if count == 6 then
+						letters = letters .. "F,"
+					end
+					if count == 7 then
+						letters = letters .. "G,"
+					end
+					if count == 8 then
+						letters = letters .. "E,"
+					end
+				end
+				print(letters)
+
+				local list = string.split(letters, ",")
+				local getrandom = math.random(1, tonumber(flight.SEATING.FC.PERROW.Value))
+
+				selectedletter = list[getrandom]
+			end
+
+
+
+			getECrow()
+
+			getletterinrow()
+
+
+			local exactseat = selectedrowstring .. selectedletter
+
+
+
+			for _,v in pairs(flight.CHECKEDINUSERS:GetChildren()) do
+				while v.SEAT.Value == exactseat do
+					getECrow()
+					getletterinrow()
+					exactseat = selectedrowstring .. selectedletter
+				end
+			end
+
+
+			print(exactseat)
+
+			script.Parent.Visible = false
+			script.Parent.EC.Visible = true
+			script.Parent.BC.Visible = true
+			script.Parent.FC.Visible = true
+			script.Parent.FindingSeat.Visible = false
+			script.Parent.Parent.FinalPage.Visible = true
+
+			script.Parent.Parent.FinalPage.Seat.Text = exactseat
+			script.Parent.Parent.FinalPage.SeatingSection.Text = foundsection
+
+
+
+
+		else
+
+			script.Parent.FC.Text = "This aircraft has no FC seating."
+			wait(2)
+			script.Parent.FC.Text = "FC"
+		end
+
+
+
+	else
+		if target:GetRankInGroup(game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text).SEATING.GROUPID.Value) then
+			local flight = game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text)
+			print(flight.Name)
+			if flight.SEATING.FC.ROWS.Value ~= "0" then
+				local Sections = ""
+				local selectedrow = 0
+				local selectedrowstring = ""
+
+				local letters = ""
+
+				local selectedletter = ""
+
+				local dividedrows = ""
+				local foundsection = ""
+
+
+
+
+				local function getECrow()
+					for count = 1, 1 do
+						Sections = Sections.. "FIRST ".. count .. ","
+					end
+					print(Sections)
+
+					local rows = flight.SEATING.FC.ROWS.Value
+
+					local rowhighlow = string.split(rows, "-")
+					print(rowhighlow)
+
+					selectedrow = math.random(tonumber(rowhighlow[1]), tonumber(rowhighlow[2]))
+
+					selectedrowstring = tostring(selectedrow)
+					print(selectedrowstring)
+
+					local sectionedrows = tonumber(rowhighlow[2]) / 1
+					print(sectionedrows)
+
+					local splitsections = string.split(Sections, ",")
+
+
+					foundsection = Sections
+				end
+
+
+
+
+
+				local function getletterinrow()
+					for count = 1, tonumber(flight.SEATING.FC.PERROW.Value) do
+						if count == 1 then
+							letters = letters .. "A,"
+						end
+						if count == 2 then
+							letters = letters .. "B,"
+						end
+						if count == 3 then
+							letters = letters .. "C,"
+						end
+						if count == 4 then
+							letters = letters .. "D,"
+						end
+						if count == 5 then
+							letters = letters .. "E,"
+						end
+						if count == 6 then
+							letters = letters .. "F,"
+						end
+						if count == 7 then
+							letters = letters .. "G,"
+						end
+						if count == 8 then
+							letters = letters .. "E,"
+						end
+					end
+					print(letters)
+
+					local list = string.split(letters, ",")
+					local getrandom = math.random(1, tonumber(flight.SEATING.FC.PERROW.Value))
+
+					selectedletter = list[getrandom]
+				end
+
+
+
+				getECrow()
+
+				getletterinrow()
+
+
+				local exactseat = selectedrowstring .. selectedletter
+
+
+
+				for _,v in pairs(flight.CHECKEDINUSERS:GetChildren()) do
+					while v.SEAT.Value == exactseat do
+						getECrow()
+						getletterinrow()
+						exactseat = selectedrowstring .. selectedletter
+					end
+				end
+
+
+				print(exactseat)
+
+				script.Parent.Visible = false
+				script.Parent.EC.Visible = true
+				script.Parent.BC.Visible = true
+				script.Parent.FC.Visible = true
+				script.Parent.FindingSeat.Visible = false
+				script.Parent.Parent.FinalPage.Visible = true
+
+				script.Parent.Parent.FinalPage.Seat.Text = exactseat
+				script.Parent.Parent.FinalPage.SeatingSection.Text = foundsection
+
+
+
+
+			else
+
+				script.Parent.FC.Text = "This aircraft has no FC seating."
+				wait(2)
+				script.Parent.FC.Text = "FC"
+			end
+			
+			
+			else
+
+			promptevent:FireServer(target, game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text).SEATING.FC.SHIRTID.Value)   --FC SHIRT ID
+
+
+			script.Parent.Parent.StatusBar.Text = "Prompting purchase..."
+
+			local productFunctions = {}
+
+			productFunctions[game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text).SEATING.FC.SHIRTID.Value] = function(receipt, player)
+
+				if player == target then
+
+					script.Parent.Parent.StatusBar.Text = "Player purchased, run system again."
+					wait(2)
+					script.Parent.Parent.StatusBar.Text = "Complete prompts..."
+
+					return true
+				end
+			end
+
+			local function processReceipt(receiptInfo)
+				local player = game.Players:GetPlayerByUserId(receiptInfo.PlayerId)
+				if player == target then
+					local handler = productFunctions[receiptInfo.ProductId]
+
+					-- Call the handler function and catch any errors
+					local success, result = pcall(handler, receiptInfo, player)
+				end
+			end
+			
+			wait(10)
+
+			script.Parent.Parent.StatusBar.Text = "Complete prompts..."
+			
+		end
+
+		
+	end
+
+
+end)
+
+
+
+script.Parent.Parent.FinalPage.AnotherSeatButton.MouseButton1Click:Connect(function()
+	local Players = game:GetService("Players")
+	local target = Players:FindFirstChild(script.Parent.Parent.Username.Text)
+	script.Parent.Parent.FinalPage.Visible = false
+	
+	
+	if script.Parent.Parent.FinalPage.SeatingSection.Text == "FIRST 1" then
+		local flight = game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text)
+		print(flight.Name)
+		if flight.SEATING.FC.ROWS.Value ~= "0" then
+			local Sections = ""
+			local selectedrow = 0
+			local selectedrowstring = ""
+
+			local letters = ""
+
+			local selectedletter = ""
+
+			local dividedrows = ""
+			local foundsection = ""
+
+			
+
+
+			local function getECrow()
+				for count = 1, 1 do
+					Sections = Sections.. "FIRST ".. count .. ","
+				end
+				print(Sections)
+
+				local rows = flight.SEATING.FC.ROWS.Value
+
+				local rowhighlow = string.split(rows, "-")
+				print(rowhighlow)
+
+				selectedrow = math.random(tonumber(rowhighlow[1]), tonumber(rowhighlow[2]))
+
+				selectedrowstring = tostring(selectedrow)
+				print(selectedrowstring)
+
+				local sectionedrows = tonumber(rowhighlow[2]) / 1
+				print(sectionedrows)
+
+				local splitsections = string.split(Sections, ",")
+
+
+				foundsection = Sections
+			end
+
+
+
+
+
+			local function getletterinrow()
+				for count = 1, tonumber(flight.SEATING.FC.PERROW.Value) do
+					if count == 1 then
+						letters = letters .. "A,"
+					end
+					if count == 2 then
+						letters = letters .. "B,"
+					end
+					if count == 3 then
+						letters = letters .. "C,"
+					end
+					if count == 4 then
+						letters = letters .. "D,"
+					end
+					if count == 5 then
+						letters = letters .. "E,"
+					end
+					if count == 6 then
+						letters = letters .. "F,"
+					end
+					if count == 7 then
+						letters = letters .. "G,"
+					end
+					if count == 8 then
+						letters = letters .. "E,"
+					end
+				end
+				print(letters)
+
+				local list = string.split(letters, ",")
+				local getrandom = math.random(1, tonumber(flight.SEATING.FC.PERROW.Value))
+
+				selectedletter = list[getrandom]
+			end
+
+
+
+			getECrow()
+
+			getletterinrow()
+
+
+			local exactseat = selectedrowstring .. selectedletter
+
+
+
+			for _,v in pairs(flight.CHECKEDINUSERS:GetChildren()) do
+				while v.SEAT.Value == exactseat do
+					getECrow()
+					getletterinrow()
+					exactseat = selectedrowstring .. selectedletter
+				end
+			end
+
+
+			print(exactseat)
+
+			script.Parent.Visible = false
+			script.Parent.EC.Visible = true
+			script.Parent.BC.Visible = true
+			script.Parent.FC.Visible = true
+			script.Parent.FindingSeat.Visible = false
+			script.Parent.Parent.FinalPage.Visible = true
+
+			script.Parent.Parent.FinalPage.Seat.Text = exactseat
+			script.Parent.Parent.FinalPage.SeatingSection.Text = foundsection
+
+
+
+
+		else
+
+			script.Parent.FC.Text = "This aircraft has no FC seating."
+			wait(2)
+			script.Parent.FC.Text = "FC"
+		end
+			
+			
+		elseif script.Parent.Parent.FinalPage.SeatingSection.Text == "BUSINESS 1" then
+		local flight = game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text)
+		print(flight.Name)
+		if flight.SEATING.BC.ROWS.Value ~= "0" then
+			local Sections = ""
+			local selectedrow = 0
+			local selectedrowstring = ""
+
+			local letters = ""
+
+			local selectedletter = ""
+
+			local dividedrows = ""
+			local foundsection = ""
+
+			script.Parent.Visible = false
+			script.Parent.Parent.FindingSeat.Visible = true
+
+
+			local function getECrow()
+				for count = 1, 1 do
+					Sections = Sections.. "BUSINESS ".. count .. ","
+				end
+				print(Sections)
+
+				local rows = flight.SEATING.BC.ROWS.Value
+
+				local rowhighlow = string.split(rows, "-")
+				print(rowhighlow)
+
+				selectedrow = math.random(tonumber(rowhighlow[1]), tonumber(rowhighlow[2]))
+
+				selectedrowstring = tostring(selectedrow)
+				print(selectedrowstring)
+
+				local sectionedrows = tonumber(rowhighlow[2]) / 1
+				print(sectionedrows)
+
+				local splitsections = string.split(Sections, ",")
+
+
+				foundsection = Sections
+			end
+
+
+
+
+
+			local function getletterinrow()
+				for count = 1, tonumber(flight.SEATING.BC.PERROW.Value) do
+					if count == 1 then
+						letters = letters .. "A,"
+					end
+					if count == 2 then
+						letters = letters .. "B,"
+					end
+					if count == 3 then
+						letters = letters .. "C,"
+					end
+					if count == 4 then
+						letters = letters .. "D,"
+					end
+					if count == 5 then
+						letters = letters .. "E,"
+					end
+					if count == 6 then
+						letters = letters .. "F,"
+					end
+					if count == 7 then
+						letters = letters .. "G,"
+					end
+					if count == 8 then
+						letters = letters .. "E,"
+					end
+				end
+				print(letters)
+
+				local list = string.split(letters, ",")
+				local getrandom = math.random(1, tonumber(flight.SEATING.BC.PERROW.Value))
+
+				selectedletter = list[getrandom]
+			end
+
+
+
+			getECrow()
+
+			getletterinrow()
+
+
+			local exactseat = selectedrowstring .. selectedletter
+
+
+
+			for _,v in pairs(flight.CHECKEDINUSERS:GetChildren()) do
+				while v.SEAT.Value == exactseat do
+					getECrow()
+					getletterinrow()
+					exactseat = selectedrowstring .. selectedletter
+				end
+			end
+
+
+			print(exactseat)
+
+			script.Parent.Visible = false
+			script.Parent.EC.Visible = true
+			script.Parent.BC.Visible = true
+			script.Parent.FC.Visible = true
+			script.Parent.FindingSeat.Visible = false
+			script.Parent.Parent.FinalPage.Visible = true
+
+			script.Parent.Parent.FinalPage.Seat.Text = exactseat
+			script.Parent.Parent.FinalPage.SeatingSection.Text = foundsection
+
+
+
+
+		else
+
+			script.Parent.BC.Text = "This aircraft has no BC seating."
+			wait(2)
+			script.Parent.BC.Text = "BC"
+		end
+				
+				
+			else
+		local flight = game.Workspace.AeroPhoneSystem.ScheduledFlights:FindFirstChild(script.Parent.Parent.FlightNumber.Text)
+		print(flight.Name)
+		local Sections = ""
+		local selectedrow = 0
+		local selectedrowstring = ""
+
+		local letters = ""
+
+		local selectedletter = ""
+
+		local dividedrows = ""
+		local foundsection = ""
+
+		
+
+
+		local function getECrow()
+			for count = 1, tonumber(flight.SEATING.BOARDINGSECTIONS.Value) do
+				Sections = Sections.. "MAIN ".. count .. ","
+			end
+			print(Sections)
+
+			local rows = flight.SEATING.EC.ROWS.Value
+
+			local rowhighlow = string.split(rows, "-")
+			print(rowhighlow)
+
+			selectedrow = math.random(tonumber(rowhighlow[1]), tonumber(rowhighlow[2]))
+
+			selectedrowstring = tostring(selectedrow)
+			print(selectedrowstring)
+
+			local sectionedrows = tonumber(rowhighlow[2]) / tonumber(flight.SEATING.BOARDINGSECTIONS.Value)
+			print(sectionedrows)
+
+			local splitsections = string.split(Sections, ",")
+
+
+			local counted = -1
+
+
+			for sectioned = tonumber(rowhighlow[1]), tonumber(rowhighlow[2]) + sectionedrows, sectionedrows do
+				counted = counted + 1
+				print(counted)
+				print("Sectioned: " .. sectioned)
+				print("Lowest: " .. rowhighlow[1])
+				if selectedrow == tonumber(rowhighlow[1]) then
+					if foundsection == "" then
+						foundsection = splitsections[1]
+						print(foundsection)
+					end
+				end
+				if selectedrow >= tonumber(rowhighlow[1]) and selectedrow < sectioned then
+					if foundsection == "" then
+						foundsection = splitsections[counted]
+						print(foundsection)
+					end
+				end
+			end
+
+			if selectedrow == tonumber(rowhighlow[2]) then
+				foundsection = splitsections[counted]
+			end
+
+		end
+
+		local function getletterinrow()
+			for count = 1, tonumber(flight.SEATING.EC.PERROW.Value) do
+				if count == 1 then
+					letters = letters .. "A,"
+				end
+				if count == 2 then
+					letters = letters .. "B,"
+				end
+				if count == 3 then
+					letters = letters .. "C,"
+				end
+				if count == 4 then
+					letters = letters .. "D,"
+				end
+				if count == 5 then
+					letters = letters .. "E,"
+				end
+				if count == 6 then
+					letters = letters .. "F,"
+				end
+				if count == 7 then
+					letters = letters .. "G,"
+				end
+				if count == 8 then
+					letters = letters .. "E,"
+				end
+			end
+			print(letters)
+
+			local list = string.split(letters, ",")
+			local getrandom = math.random(1, tonumber(flight.SEATING.EC.PERROW.Value))
+
+			selectedletter = list[getrandom]
+		end
+
+
+
+		getECrow()
+
+		getletterinrow()
+
+
+		local exactseat = selectedrowstring .. selectedletter
+
+
+
+		for _,v in pairs(flight.CHECKEDINUSERS:GetChildren()) do
+			while v.SEAT.Value == exactseat do
+				getECrow()
+				getletterinrow()
+				exactseat = selectedrowstring .. selectedletter
+			end
+		end
+
+
+		print(exactseat)
+
+		script.Parent.Visible = false
+		script.Parent.EC.Visible = true
+		script.Parent.BC.Visible = true
+		script.Parent.FC.Visible = true
+		script.Parent.FindingSeat.Visible = false
+		script.Parent.Parent.FinalPage.Visible = true
+
+		script.Parent.Parent.FinalPage.Seat.Text = exactseat
+		script.Parent.Parent.FinalPage.SeatingSection.Text = foundsection
+			end
+end)
+
+
+
+
+--[[ script.Parent.Parent.FinalPage.TSAPreCheck.MouseButton1Click:Connect(function()
+	--local success, doesplayerownasset = pcall(PlayerOwnsAsset, MarketplaceService, target, settings.TSAPreCheckID)
+	local Players = game:GetService("Players")
+	local target = Players:FindFirstChild(script.Parent.Parent.Username.Text)
+	
+	local doesplayerownasset = MarketplaceService:PlayerOwnsAsset(target, 8473397416) -- TSA PRECHECK ID
+		
+		
+		if doesplayerownasset then
+		script.Parent.Parent.FinalPage.TSAPre.Visible = true
+		
+	else
+
+		promptevent:FireServer(target, 8473397416)
+
+
+		script.Parent.Parent.StatusBar.Text = "Prompting purchase..."
+
+		local productFunctions = {}
+
+		productFunctions[8473397416] = function(receipt, player)
+
+			if player == target then
+
+				script.Parent.Parent.StatusBar.Text = "Player purchased, run system again."
+				wait(2)
+				script.Parent.Parent.StatusBar.Text = "Complete prompts..."
+
+				return true
+			end
+		end
+
+		local function processReceipt(receiptInfo)
+			local player = game.Players:GetPlayerByUserId(receiptInfo.PlayerId)
+			if player == target then
+				local handler = productFunctions[receiptInfo.ProductId]
+
+				-- Call the handler function and catch any errors
+				local success, result = pcall(handler, receiptInfo, player)
+			end
+		end
+
+		wait(10)
+
+		script.Parent.Parent.StatusBar.Text = "Complete prompts..."
+	end
+end)]]
